@@ -4,12 +4,12 @@ pipeline{
     stages{
         stage('start'){
             steps{
-                sh 'npm install'
+                sh 'cd reactjs-demo && npm install && npm run build'
             }
         }
         stage('run build.sh'){
             steps{
-                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/satheeka/reactjs-demo.git']])
+                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vishnuac57/reactjs-demo.git']])
                  sh 'npm run build'
                  sh 'chmod +x ./build.sh'
                  sh './build.sh'
@@ -32,9 +32,9 @@ pipeline{
             }
             steps {
                 DOCKERHUB_CREDENTIALS=credentials('dockerid') {
-                 sh 'sudo docker login -u satheeka -p satheesh1'
-                 sh 'sudo docker tag react-app:latest satheeka/prod:latest'
-                 sh 'sudo docker push satheeka/prod:latest'
+                 sh 'sudo docker login -u vishnuac1999 -p Vishnuselvam@1999'
+                 sh 'sudo docker tag reactapp:latest vishnuac1999/reactapp:latest'
+                 sh 'sudo docker push vishnuac1999/reactapp:latest'
                 }           
             }
         }    
