@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  webapp:
+    image: vishnuac1999/reactapp
+    container_name: reactjs
+    ports:
+            - "3001:80"
+
