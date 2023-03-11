@@ -20,7 +20,7 @@ pipeline{
               expression { BRANCH_NAME == 'Dev' }
             }
             steps{
-                withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
+               withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
                 sh 'chmod +x ./deploy.sh'
                 sh './deploy.sh'
                 }
@@ -31,7 +31,7 @@ pipeline{
               expression { BRANCH_NAME == 'master' }
             }
             steps {
-                withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
+               withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
                  sh 'sudo docker login -u vishnuac1999 -p ${docker_password}'
                  sh 'sudo docker tag reactapp:latest vishnuac1999/reactapp'
                  sh 'sudo docker push vishnuac1999/reactapp'
