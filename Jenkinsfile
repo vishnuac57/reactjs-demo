@@ -4,6 +4,8 @@ pipeline{
     stages{
         stage('build npm artifact'){
             steps{
+                ssh -i Downloads/test-1.pem ubuntu@18.232.148.150
+                sh 'sudo -i && cd reactjs-demo'
                 sh 'npm install'
             }
         }
