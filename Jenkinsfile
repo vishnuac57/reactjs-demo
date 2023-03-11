@@ -1,43 +1,43 @@
 pipeline{
     agent any
-
+    
     stages{
-        stage('start'){
+        stage('build npm artifact'){
             steps{
                 sh 'cd reactjs-demo && npm install && npm run build'
             }
         }
-        stage('run build.sh'){
+        stage('build image with build.sh'){
             steps{
-                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vishnuac57/reactjs-demo.git']])
+                checkout scmGit(branches: [[name: '*/Dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vishnuac57/reactjs-demo.git']])
                  sh 'npm run build'
                  sh 'chmod +x ./build.sh'
                  sh './build.sh'
             }
         }
-        stage('push Dev Repo'){
+        stage('push image to dev repo'){
              when {
-              expression { BRANCH_NAME == 'dev' }
+              expression { BRANCH_NAME == 'Dev' }
             }
             steps{
-                DOCKERHUB_CREDENTIALS=credentials('dockerid') {
-                sh 'chmod 777 ./deploy.sh'
+                withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
+                sh 'chmod +x ./deploy.sh'
                 sh './deploy.sh'
                 }
             }
         }
-        stage('push Prod repo'){
+        stage('push image to Prod repo'){
             when {
               expression { BRANCH_NAME == 'master' }
             }
             steps {
-                DOCKERHUB_CREDENTIALS=credentials('dockerid') {
-                 sh 'sudo docker login -u vishnuac1999 -p Vishnuselvam@1999'
-                 sh 'sudo docker tag reactapp:latest vishnuac1999/reactapp:latest'
-                 sh 'sudo docker push vishnuac1999/reactapp:latest'
-                }
+                withCredentials([string(credentialsId: 'Docker_username', variable: 'docker_username'), string(credentialsId: 'Docker_Cred', variable: 'docker_password')]) {
+                 sh 'sudo docker login -u vishnuac1999 -p ${docker_password}'
+                 sh 'sudo docker tag reactapp:latest vishnuac1999/reactapp'
+                 sh 'sudo docker push vishnuac1999/reactapp'
+                 echo "images pushed to Prod repo"
+                }           
             }
-        }
+        }    
     }
 }
-
