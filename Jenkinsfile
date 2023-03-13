@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage('build npm artifact'){
             steps{
-                sh 'cd reactjs-demo'
+                sh 'sudo -i && cd reactjs-demo'
                 sh 'npm install'
             }
         }
