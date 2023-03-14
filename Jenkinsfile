@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage('build npm artifact'){
             steps{
-                sh 'npm install'
+                sh 'cd reactjs-demo && npm install'
             }
         }
         stage('build image with build.sh'){
